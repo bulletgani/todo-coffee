@@ -1,6 +1,5 @@
 generate-js: deps
-	@find src -name 'src/app.coffee' | xargs coffee -c -o .
-	@find src -name 'src/apps/*.coffee' | xargs coffee -c -o public/js
+	@coffee -o ./ -cw --bare  src/
 
 deps:
 	@test `which coffee` || echo 'You need to have CoffeeScript in your PATH.\nPlease install it using `brew install coffee-script` or `npm install coffee-script`.'
@@ -19,7 +18,6 @@ link: generate-js
 	@remove-js
 
 dev: generate-js
-	@coffee -wc --bare -o src/app.coffee .
-	@coffee -wc --bare -o src/apps/*.coffee public/js
+	@coffee -o ./ -cw --bare src/
 
 .PHONY: all
