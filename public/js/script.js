@@ -14,7 +14,7 @@ $(function() {
       });
     }
   });
-  window.TodoList = Backbone.collection.extend({
+  window.TodoList = Backbone.Collection.extend({
     model: Todo,
     url: 'api/todos',
     done: function() {
@@ -23,7 +23,7 @@ $(function() {
       });
     },
     remaining: function() {
-      return this.without.apply(this, this.done);
+      return this.without.apply(this, this.done());
     },
     nextOrder: function() {
       if (!this.length) return 1;
@@ -36,10 +36,10 @@ $(function() {
   window.Todos = new TodoList;
   window.TodoView = Backbone.View.extend({
     tagName: 'li',
-    template: _.template($('#item_template').html()),
+    template: _.template($('#item-template').html()),
     events: {
       "click.check": "toggleDone",
-      "dblclicl div.todo-text": "edit",
+      "dblclick div.todo-text": "edit",
       "click span.todo-destroy": "clear",
       "keypress .todo-input": "updateOnEnter"
     },
@@ -84,7 +84,7 @@ $(function() {
   });
   window.AppView = Backbone.View.extend({
     el: $("#todoapp"),
-    statsTemplate: _.template($('#stats_template').html()),
+    statsTemplate: _.template($('#stats-template').html()),
     events: {
       'keypress #new-todo': "createOnEnter",
       'keyup #new-todo': "showTooltip",
@@ -123,7 +123,7 @@ $(function() {
       });
       return this.input.val("");
     },
-    clearCompleled: function() {
+    clearCompleted: function() {
       _.each(Todos.done(), function(todo) {
         return todo.destroy();
       });
@@ -131,9 +131,9 @@ $(function() {
     },
     showTooltip: function(e) {
       var show, tooltip, val;
-      tooltip = this.$(".ui-tooltop-top");
+      tooltip = this.$(".ui-tooltip-top");
       val = this.input.val();
-      tooltip.faceOut();
+      tooltip.fadeOut();
       if (this.tooltipTimeout) clearTimeout(this.tooltipTimeout);
       if (val === '' || val === this.input.attr('placeholder')) return;
       show = function() {

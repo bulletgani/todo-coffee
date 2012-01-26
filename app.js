@@ -27,7 +27,7 @@ app.configure(function() {
     showStack: true
   }));
   app.set('views', path.join(application_root, "views"));
-  return app.set('view_engine', 'jade');
+  return app.set('view engine', 'jade');
 });
 
 app.get('/', function(req, res) {
@@ -40,7 +40,7 @@ app.get('/todo', function(req, res) {
   });
 });
 
-app.get('api/todos', function(req, res) {
+app.get('/api/todos', function(req, res) {
   return Todo.find(function(err, todos) {
     return res.send(todos);
   });
@@ -83,9 +83,13 @@ app.post('/api/todos', function(req, res) {
   });
 });
 
-app["delete"]('api/todos/:id', function(req, res) {
+app["delete"]('/api/todos/:id', function(req, res) {
   return Todo.findById(req.params.id, function(err, todo) {
-    if (!err) console.log("removed");
+    if (!err) {
+      todo.remove(function(err) {
+        if (!err) return console.log("removed");
+      });
+    }
     return res.send('');
   });
 });

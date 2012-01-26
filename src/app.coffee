@@ -19,7 +19,7 @@ app.configure ->
   app.use(express.static(path.join(application_root, "public")))
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true}))
   app.set('views', path.join(application_root, "views"))
-  app.set('view_engine', 'jade')
+  app.set('view engine', 'jade')
 
 
 app.get '/', (req, res) ->
@@ -29,7 +29,7 @@ app.get '/', (req, res) ->
 app.get '/todo', (req, res) ->
   res.render('todo', {title: "MongoDB Backed TODO App"})
 
-app.get 'api/todos', (req, res) ->
+app.get '/api/todos', (req, res) ->
   Todo.find (err, todos) ->
     res.send(todos)
 
@@ -60,9 +60,11 @@ app.post '/api/todos', (req, res) ->
     return console.log("updated") if !err
     res.send(todo)
 
-app.delete 'api/todos/:id', (req, res) ->
+app.delete '/api/todos/:id', (req, res) ->
   Todo.findById req.params.id, (err, todo) ->
-    console.log("removed") if !err
+    if !err
+      todo.remove (err) ->
+       console.log("removed") if !err
     return res.send('')
 
 app.listen 3000

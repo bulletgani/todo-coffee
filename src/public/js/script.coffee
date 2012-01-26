@@ -8,14 +8,15 @@ $( ->
     toggle: ->
       @.save {done: !@.get("done")}
 
-  window.TodoList = Backbone.collection.extend
+
+  window.TodoList = Backbone.Collection.extend
     model: Todo
     url: 'api/todos'
     done: ->
       @filter (todo) ->
         todo.get('done')
     remaining: ->
-      @.without.apply( @, @.done)
+      @.without.apply( @, @.done())
     nextOrder: ->
       return 1 if !@.length
       @.last().get('order') + 1
@@ -26,10 +27,10 @@ $( ->
 
   window.TodoView = Backbone.View.extend
     tagName: 'li'
-    template: _.template($('#item_template').html())
+    template: _.template($('#item-template').html())
     events:
       "click.check"             : "toggleDone"
-      "dblclicl div.todo-text"  : "edit"
+      "dblclick div.todo-text"  : "edit"
       "click span.todo-destroy" : "clear"
       "keypress .todo-input"    : "updateOnEnter"
 
@@ -70,7 +71,7 @@ $( ->
 
   window.AppView = Backbone.View.extend
     el: $("#todoapp")
-    statsTemplate: _.template($('#stats_template').html())
+    statsTemplate: _.template($('#stats-template').html())
     events:
       'keypress #new-todo': "createOnEnter"
       'keyup #new-todo': "showTooltip"
@@ -102,15 +103,15 @@ $( ->
       Todos.create(text: text)
       @.input.val("")
 
-    clearCompleled: ->
+    clearCompleted: ->
       _.each Todos.done(), (todo) ->
         todo.destroy()
       false
 
     showTooltip: (e) ->
-      tooltip = @.$(".ui-tooltop-top")
+      tooltip = @.$(".ui-tooltip-top")
       val = @.input.val()
-      tooltip.faceOut()
+      tooltip.fadeOut()
       clearTimeout(@.tooltipTimeout) if (@.tooltipTimeout)
       return if val == '' || val == @.input.attr('placeholder')
       show = ->
