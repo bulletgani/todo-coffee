@@ -78,7 +78,7 @@ app.post('/api/todos', function(req, res) {
     order: req.body.order
   });
   return todo.save(function(err) {
-    if (!err) return console.log("updated");
+    if (!err) console.log("updated");
     return res.send(todo);
   });
 });

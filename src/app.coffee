@@ -39,7 +39,7 @@ app.get '/api/todos/:id', (res, req) ->
     todo.done = req.body.done
     todo.order = req.body.order
     todo.save (err) ->
-      console.log('updated') if !err
+      console.log('updated') unless err
       res.send(todo)
 
 app.put '/api/todos/:id', (req, res) ->
@@ -48,7 +48,7 @@ app.put '/api/todos/:id', (req, res) ->
     todo.done = req.body.done
     todo.order = req.body.order
     todo.save (err) ->
-      console.log("updated") if !err
+      console.log("updated") unless err
       res.send(todo)
 
 app.post '/api/todos', (req, res) ->
@@ -57,14 +57,14 @@ app.post '/api/todos', (req, res) ->
     done: req.body.done
     order: req.body.order
   todo.save (err) ->
-    return console.log("updated") if !err
+    console.log("updated") unless err
     res.send(todo)
 
 app.delete '/api/todos/:id', (req, res) ->
   Todo.findById req.params.id, (err, todo) ->
     if !err
       todo.remove (err) ->
-       console.log("removed") if !err
+       console.log("removed") unless err
     return res.send('')
 
 app.listen 3000
