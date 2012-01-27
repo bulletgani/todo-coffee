@@ -38,9 +38,9 @@ $(function() {
     tagName: 'li',
     template: _.template($('#item-template').html()),
     events: {
-      "click.check": "toggleDone",
+      "click .check": "toggleDone",
       "dblclick div.todo-text": "edit",
-      "click span.todo-destroy": "clear",
+      "click #todo-destory": "clear",
       "keypress .todo-input": "updateOnEnter"
     },
     initialize: function() {
@@ -127,6 +127,7 @@ $(function() {
       _.each(Todos.done(), function(todo) {
         return todo.destroy();
       });
+      this.reset();
       return false;
     },
     showTooltip: function(e) {
@@ -139,7 +140,7 @@ $(function() {
       show = function() {
         return tooltip.show().fadeIn();
       };
-      return this.tooltipTimeout = _.delay(show, 1000);
+      return this.tooltipTimeout = _.delay(show(), 1000);
     }
   });
   return window.App = new AppView;

@@ -13,7 +13,7 @@ $( ->
     model: Todo
     url: 'api/todos'
     done: ->
-      @filter (todo) ->
+      @.filter (todo) ->
         todo.get('done')
     remaining: ->
       @.without.apply( @, @.done())
@@ -29,9 +29,9 @@ $( ->
     tagName: 'li'
     template: _.template($('#item-template').html())
     events:
-      "click.check"             : "toggleDone"
+      "click .check"            : "toggleDone"
       "dblclick div.todo-text"  : "edit"
-      "click span.todo-destroy" : "clear"
+      "click #todo-destory"     : "clear"
       "keypress .todo-input"    : "updateOnEnter"
 
     initialize: ->
@@ -106,6 +106,7 @@ $( ->
     clearCompleted: ->
       _.each Todos.done(), (todo) ->
         todo.destroy()
+      @.reset()
       false
 
     showTooltip: (e) ->
@@ -116,7 +117,7 @@ $( ->
       return if val == '' || val == @.input.attr('placeholder')
       show = ->
         tooltip.show().fadeIn()
-      @tooltipTimeout = _.delay(show, 1000)
+      @tooltipTimeout = _.delay(show(), 1000)
 
   window.App = new AppView
 
